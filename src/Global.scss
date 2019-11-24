@@ -1,0 +1,19 @@
+.container {
+  background: #e3f2fd;
+  display: flex;
+  flex-direction: row;
+  width: 100vw;
+  height: 100vh;
+  justify-content: center;
+  align-items: center;
+}
+.box {
+   width: 600px;
+   height: 500px;
+   border-radius: 3%;
+   border: 1px solid #A9A9A9;
+   background: #fff;
+ }
+body {
+  margin: 0 auto !important;
+}
