@@ -18,17 +18,22 @@ class Login extends Component {
          code: null,
          showInputCode: false,
          logged: false,
+         error: false
       }
    }
 
    submit() {
       if (this.state.login === 'meuemail@email.com' && this.state.pass === 'admin123' && !this.state.code) {
          this.setState({ showInputCode: true })
+         this.setState({ error: false })
          localStorage.setItem('email', this.state.login)
       } else if (this.state.login === 'meuemail@email.com' && this.state.pass === 'admin123' && this.state.code) {
          const generate = new Generate2FA();
          const result = generate.verifyTOTP(this.state.code, localStorage.getItem('secret'));
-         this.setState({logged: result})
+         this.setState({ logged: result })
+         this.setState({ error: !result })
+      } else {
+         this.setState({ error: true })
       }
    }
 
@@ -97,6 +102,13 @@ class Login extends Component {
                      <br />
                      <RaisedButton label="Logar" primary={true} className="btnLogin" onClick={() => this.submit()} />
                   </div>
+                  {
+                     this.state.error &&
+                     <div style={{ textAlign: 'center', marginTop: 20 }}>
+                        Dados inválidos!
+                     </div>
+                  }
+
                </MuiThemeProvider>
             </div>
          );

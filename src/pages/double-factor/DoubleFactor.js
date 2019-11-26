@@ -17,7 +17,8 @@ class DoubleFactor extends Component {
       this.state = {
          hash: '',
          code: '',
-         logged: false
+         logged: false,
+         error: false
       }
    }
 
@@ -44,6 +45,7 @@ class DoubleFactor extends Component {
       const generate = new Generate2FA();
       const result = generate.verifyTOTP(this.state.code, localStorage.getItem('secret'));
       this.setState({ logged: result })
+      this.setState({ error: !result })
    }
 
    render() {
@@ -75,7 +77,17 @@ class DoubleFactor extends Component {
                         <br />
                         <RaisedButton label="Entrar" primary={true} className="btnLogin" onClick={this.submit} />
                      </div>
+
+                     {
+                        this.state.error &&
+                        <div style={{ textAlign: 'center', marginTop: 20 }}>
+                           Dados inválidos!
+                        </div>
+                     }
+
                   </MuiThemeProvider>
+
+
                </div>
             </div>
          );
@@ -86,22 +98,4 @@ class DoubleFactor extends Component {
    }
 }
 
-export default DoubleFactor
-
-
-/*export default function DoubleFactor() {
-
-   const [stringCode, setStringCode] = useState('');
-
-   useEffect(() => {
-      const teste = 'otpauth://totp/Asi%3'// + `meuemail@gmail.com` + `?secret=` + `xxxx` + `&issuer=Asi`
-      setStringCode(teste);
-      console.log('otpauth://totp/Asi%3');
-   }, []);
-
-
-   return (
-
-   );
-}
-*/
+export default DoubleFactor;
