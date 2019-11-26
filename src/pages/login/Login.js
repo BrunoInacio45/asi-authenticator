@@ -22,23 +22,29 @@ class Login extends Component {
    }
 
    submit() {
-      Generate2FA();
-      // if (this.state.login === 'meuemail@email.com' && this.state.pass === 'admin123' && !this.state.code) {
-      //    this.setState({ showInputCode: true })
-      // } else if (this.state.login === 'meuemail@email.com' && this.state.pass === 'admin123' && this.state.code) {
-      //    this.setState({logged: true})
-      // }
+      if (this.state.login === 'meuemail@email.com' && this.state.pass === 'admin123' && !this.state.code) {
+         this.setState({ showInputCode: true })
+         localStorage.setItem('email', this.state.login)
+      } else if (this.state.login === 'meuemail@email.com' && this.state.pass === 'admin123' && this.state.code) {
+         const generate = new Generate2FA();
+         const result = generate.verifyTOTP(this.state.code, localStorage.getItem('secret'));
+         this.setState({logged: result})
+      }
    }
 
    handleChange = e => {
       this.setState({ [e.target.name]: e.target.value });
    }
 
+   redirect2fa = () => {
+      this.props.history.push('double-factor')
+   }
+
    render() {
 
       if (this.state.logged) {
          return (
-            <div style={{fontSize: 45}}>
+            <div style={{ fontSize: 45 }}>
                Logado!
             </div>
          );
@@ -85,7 +91,7 @@ class Login extends Component {
                               }}
                               defaultValue={this.state.code}
                            />
-                           <span>Ainda não tenho um código</span>
+                           <RaisedButton label="Ainda não possuo um código" primary={false} className="btnCode" onClick={() => this.redirect2fa()} />
                         </div>}
 
                      <br />
